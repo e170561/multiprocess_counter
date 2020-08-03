@@ -29,7 +29,7 @@ int main() {
    n=i-1;
 printf("n = %d\n",n);
 
-for (i=0;i<3&&i<n; i++) /*determina quantos processos filhos criar*/
+for (i=0;i<3; i++) /*determina quantos processos filhos criar*/
 	;
 N=i;
 printf("N = %d\n",N);
@@ -48,13 +48,48 @@ pid_t filho[N];
   (*c)=0;/*variavel que faz o vetor de nuemros andar*/
  
 
-for (i=0;i<N; i++){ /*cria processos filhos*/
-    filho[i] = fork();}
+for(i=0;i<=N;i++){ /*cria processos filhos*/
+   if(filho[i]!=0){
+   filho[i] = fork();
+	printf(" pid %d\n",filho[i]);}}
 
 
+while(*c<=n){
 
-    do{      /*loop de contagem*/
- 	if(filho[0]==0){
+   for(i=0;i<N;i++){
+   if(filho[i]==0){
+	printf("Processo filho%d analisa %d e c = %d\n",i,v[*c],*c);
+	if(eh_primo(v[*c])){
+	(*b)++;}
+	(*c)++;
+	}
+    if(filho[0]!=0||filho[1]!=0||filho[2]!=0){
+	printf("Processo pai analisa %d, c = %d\n",v[*c],*c);
+	if(eh_primo(v[*c]))
+	(*b)++;(*c)++;              /*o programa nao executa esse else*/
+	}}
+    
+ }
+for (i=0; i<=N; i++){
+printf("fechando os processos\n");
+if(filho[i]==0)
+	exit(0);}                    /*o programa nao passa desse ponto*/
+
+printf("Todos os filhos foram gerados. Esperando...\n");
+for (i=0; i<=N; i++) 
+    waitpid(filho[i], NULL, 0);
+
+
+ printf("Temos %d numeros primos\n",*b);
+
+  return 0;
+
+}
+
+/*
+
+do{      /*loop de contagem*/
+ /*	if(filho[0]==0){
 		printf("Processo filho[0] analisa %d e c = %d\n",v[*c],*c);
 		 if(eh_primo(v[*c]))
       		(*b)++;
@@ -78,28 +113,8 @@ for (i=0;i<N; i++){ /*cria processos filhos*/
         (*c)++;
   	} 
 
- } while((*c)<n);   /*encerra os processos filhos*/
-  for (int i=0; i<=N; i++) 
-	if(filho[i]==0)
-		exit(0);
 
-for (int i=0; i<N; i++) 
-    waitpid(filho[i], NULL, 0);
-
-
- printf("Temos %d numeros primos\n",*b);
-
-  return 0;
-
-}
-
-
-
-
-
-
-
-
+*/
 
 
 
