@@ -10,7 +10,7 @@ int eh_primo(int a){
     int i;
     if(a==1||a==0)
 	return 0;
-    for(i=2;i<a/2;i++)
+    for(i=2;i<=a/2;i++)
 	if(a%i==0)
 
     	    return 0;
@@ -23,16 +23,13 @@ int main() {
 
 
     while(scanf("%d\n", &v[i])==1){             /*loop de armazenamento*/
-    	printf("o numero armazanado e %d   \n",v[i]);
 	i++;
     	}
-   n=i-1;
-printf("n = %d\n",n);
+   n=i;
 
-for (i=0;i<3; i++) /*determina quantos processos filhos criar*/
+for (i=0;i<n-1&&i<3; i++) /*determina quantos processos filhos criar*/
 	;
-N=i;
-printf("N = %d\n",N);
+N=i-1;
 pid_t filho[N];
 
 
@@ -47,74 +44,32 @@ pid_t filho[N];
   if ((long int)c==-1) printf("Erro de alocacao!\n");
   (*c)=0;/*variavel que faz o vetor de nuemros andar*/
  
-
-for(i=0;i<=N;i++){ /*cria processos filhos*/
-   if(filho[i]!=0){
+for(i=0;i<=N;i++){ /*cria processos filhos*/ 
    filho[i] = fork();
-	printf(" pid %d\n",filho[i]);}}
-
-
-while(*c<=n){
-
-   for(i=0;i<N;i++){
+   
    if(filho[i]==0){
-	printf("Processo filho%d analisa %d e c = %d\n",i,v[*c],*c);
 	if(eh_primo(v[*c])){
 	(*b)++;}
 	(*c)++;
-	}
-    if(filho[0]!=0||filho[1]!=0||filho[2]!=0){
-	printf("Processo pai analisa %d, c = %d\n",v[*c],*c);
-	if(eh_primo(v[*c]))
-	(*b)++;(*c)++;              /*o programa nao executa esse else*/
-	}}
-    
- }
-for (i=0; i<=N; i++){
-printf("fechando os processos\n");
-if(filho[i]==0)
-	exit(0);}                    /*o programa nao passa desse ponto*/
 
-printf("Todos os filhos foram gerados. Esperando...\n");
+	exit(0);}
+	sleep(1);}
+	
+
 for (i=0; i<=N; i++) 
     waitpid(filho[i], NULL, 0);
 
+while(*c<n){
 
- printf("Temos %d numeros primos\n",*b);
+	if(eh_primo(v[(*c)++]))
+   	(*b)++;
+	}
+    
+printf("%d\n",*b);
 
   return 0;
 
 }
-
-/*
-
-do{      /*loop de contagem*/
- /*	if(filho[0]==0){
-		printf("Processo filho[0] analisa %d e c = %d\n",v[*c],*c);
-		 if(eh_primo(v[*c]))
-      		(*b)++;
-                (*c)++;}
-	if(filho[1]==0){
-		printf("Processo filho[1] analisa %d c = %d\n",v[*c],*c);
-		 if(eh_primo(v[*c]))
-      		(*b)++;
-                (*c)++;}
-	if(filho[2]==0){
-		printf("Processo filho[2] analisa %d e c =%d \n",v[*c],*c);
-		 if(eh_primo(v[*c]))
-      		(*b)++;
-                (*c)++;}
-      
- 	if(filho[i]!=0){
-	printf("Processo pai analisa %d e c = %d\n",v[*c],*c);
-	sleep(1);
-	if(eh_primo(v[*c]))
-        	(*b)++;
-        (*c)++;
-  	} 
-
-
-*/
 
 
 
