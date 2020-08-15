@@ -48,19 +48,20 @@ for(i=0;i<=N;i++){ /*cria processos filhos*/
    filho[i] = fork();
    
    if(filho[i]==0){
+	while(*c<n){
+	
 	if(eh_primo(v[*c])){
 	(*b)++;}
 	(*c)++;
-
-	exit(0);}
 	sleep(1);}
+	exit(0);}}
+	
 	
 
 for (i=0; i<=N; i++) 
     waitpid(filho[i], NULL, 0);
 
 while(*c<n){
-
 	if(eh_primo(v[(*c)++]))
    	(*b)++;
 	}
@@ -70,8 +71,4 @@ printf("%d\n",*b);
 return 0;
 
 }
-
-
-
-
 
